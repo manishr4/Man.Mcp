@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Man.McpClient/Man.McpClient.csproj" Id="863aaa0f-8ed5-44b1-9bb3-f537c144c6c7" />
   <Project Path="Man.McpServer/Man.McpServer.csproj" />
 </Solution>
