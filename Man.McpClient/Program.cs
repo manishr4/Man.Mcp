@@ -14,10 +14,9 @@ class Program
         try
         {
             // Connect to an MCP server
-            // This example uses npx to run a JavaScript-based MCP server
-            // The "-y" flag auto-confirms the package installation
-            Console.WriteLine("Connecting to MCP server...");
-            await client.ConnectAsync("npx", new[] { "-y", "@modelcontextprotocol/server-everything" });
+            // This example uses dotnet to run the C#-based MCP server
+            Console.WriteLine("Connecting to local Man.McpServer...");
+            await client.ConnectAsync("dotnet", new[] { "run", "--project", "../../Man.McpServer/Man.McpServer.csproj" });
 
             // After successful connection and initialization, we can interact with the server
 
