@@ -55,8 +55,39 @@ namespace Man.McpClient
                 }
             };
 
-            // Start the server process
-            process.Start();
+            try
+            {
+                // Start the server process
+                if (!process.Start())
+                {
+                    throw new InvalidOperationException($"Failed to start process: {serverCommand}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Could not start process '{serverCommand}': {ex.Message}", ex);
+            }
+
+            // Optionally, read standard error in the background for diagnostics
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    string? line;
+                    while ((line = await process.StandardError.ReadLineAsync()) != null)
+                    {
+                        Console.Error.WriteLine($"[MCP Server STDERR] {line}");
+                    }
+                }
+                catch { /* Ignore errors in background error reading */ }
+            });
+
+            // Check if the process exited immediately (e.g., exit code 1)
+            if (process.HasExited)
+            {
+                string errorOutput = await process.StandardError.ReadToEndAsync();
+                throw new InvalidOperationException($"Process exited immediately with code {process.ExitCode}.\nError output: {errorOutput}");
+            }
 
             // Get handles to the stdin and stdout streams for communication
             stdin = process.StandardInput;

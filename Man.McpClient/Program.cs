@@ -16,7 +16,8 @@ class Program
             // Connect to an MCP server
             // This example uses dotnet to run the C#-based MCP server
             Console.WriteLine("Connecting to local Man.McpServer...");
-            await client.ConnectAsync("dotnet", new[] { "run", "--project", "../../Man.McpServer/Man.McpServer.csproj" });
+            //await client.ConnectAsync("dotnet", new[] { "run", "--project", "../../Man.McpServer/Man.McpServer.csproj" });
+            await client.ConnectAsync("dotnet", new[] { "run", "--project", "E:/MyWorkingFolder/POC/MCP/Man.Mcp/Man.McpServer/Man.McpServer.csproj" });
 
             // After successful connection and initialization, we can interact with the server
 
@@ -26,12 +27,12 @@ class Program
             var tools = await client.ListToolsAsync();
             Console.WriteLine(tools);
 
-            // Example: Call a specific tool
-            // Uncomment and modify this based on what tools your server provides
-            // You'll need to know the tool name and what arguments it expects
-            // Console.WriteLine("\nCalling tool...");
-            // var result = await client.CallToolAsync("echo", new { message = "Hello MCP!" });
-            // Console.WriteLine(result);
+            //Example: Call a specific tool
+            //     Uncomment and modify this based on what tools your server provides
+            //     You'll need to know the tool name and what arguments it expects
+            Console.WriteLine("\nCalling tool...");
+            var result = await client.CallToolAsync("get_random_number", new { message = "Please give a random number between 1 and 999." });
+            Console.WriteLine(result);
 
             // Wait for user input before disconnecting
             Console.WriteLine("\nPress any key to disconnect...");
